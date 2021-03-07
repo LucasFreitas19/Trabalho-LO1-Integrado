@@ -1,4 +1,7 @@
+import java.time.LocalDateTime;
 import java.util.Scanner;
+
+import sun.util.locale.provider.LocaleDataMetaInfo;
 
 public class Main {
 
@@ -18,18 +21,7 @@ public class Main {
 		// 7 - Mostrar os concursos com um determinado numero de vagas
 		// 8 - Sair
 
-		// Informações da prova
-		// data (LocalDateTime)
-		// local (Endereco)
-		// numeroVagas (int);
-		// descricao (String)
-		// empresa (String);
-		// salarioBase (double)
-
-		// Informações do Candidato
-		// nome (String);
-		// cpf (double)
-
+		
 		Scanner teclado = new Scanner(System.in);
 		String opcao = "S";
 		BancodeDados bancodedados = new BancodeDados();
@@ -38,6 +30,9 @@ public class Main {
 			System.out.println("Informe uma opcao do menu");
 			System.out.println("1- Cadastrar prova");
 			System.out.println("2- Cadastrar um candidato");
+			System.out.println("3 - Inscrever um candidato para uma determinada prova");
+			System.out.println("4 - Mostrar concursos com intervalos entre datas");
+			System.out.println(" Mostrar os concursos com salarios maiores que um determinado valor");
 
 			int opcaoMenu = teclado.nextInt();
 			if (opcaoMenu == 1) {
@@ -60,24 +55,36 @@ public class Main {
 				String road = teclado.next();
 				System.out.println("Informe seu numero");
 				int number = teclado.nextInt();
+				System.out.println("informe o ano da prova");
+				int ano = teclado.nextInt();
+				System.out.println("informe o mes da prova");
+				int mes = teclado.nextInt();
+				System.out.println("informe o dia da prova");
+				int dia = teclado.nextInt();
+				System.out.println("informe o hora da prova");
+				int hora = teclado.nextInt();
+				System.out.println("informe o minuto da prova");
+				int minuto = teclado.nextInt();
+				System.out.println("Informe o indicador da prova");
+				int idProva = teclado.nextInt();
+				
+				int id = bancodedados.getProva().size() + 1;
 				
 
 				Endereco endereco = new Endereco(city, road, number, state, bairro);
+				LocalDateTime timer = LocalDateTime.of(ano, mes, dia, hora, minuto);
+				
 
-				// this.numerodevagas = numerodevagas;
-				// this.salariobase = salariobase;
-				// this.local = local;
-				// this.descricao = descricao;
-
-				Prova prova = new Prova(empresa, numerodevagas, salariobase, endereco, descricao);
+				Prova prova = new Prova(empresa, numerodevagas, salariobase, endereco, descricao, timer, idProva);
 				bancodedados.AdicionarProva(prova);
 				for (Prova prov : bancodedados.getProva()) {
 					
-					System.out.println(prov.getLocal());
+					System.out.println(prov.getLocal().getCity());
 					System.out.println(prov.getEmpresa());
 					System.out.println(prov.getDescricao());
 					System.out.println(prov.getNumerodevagas());
 					System.out.println(prov.getSalariobase());
+					System.out.println(prov.getTime());
 					
 					
 				}
@@ -92,8 +99,9 @@ public class Main {
 
 				Candidato candidato = new Candidato(name, cpf);
 				bancodedados.AdicionarCandidato(candidato);
+				int id = bancodedados.getCandidatos().size() + 1;
 
-				for (Candidato cand : bancodedados.getCanditos()) {
+				for (Candidato cand : bancodedados.getCandidatos()) {
 
 					System.out.println(cand.getName());
 					System.out.println(cand.getCpf());
@@ -102,6 +110,33 @@ public class Main {
 				System.out.println("Deseja continuar?");
 				opcao = teclado.next();
 
+			}
+			
+			else if(opcaoMenu == 3) {
+				
+				
+				System.out.println("Informe o indicador da prova");
+				int indicadorProva = teclado.nextInt();
+				System.out.println("Informe o indicador do aluno");
+				String cpf = teclado.next();
+				
+				
+				Candidato encontrado = bancodedados.filtro(cpf);
+				if(encontrado == null) {
+					
+					System.out.println("Candidato n�o encontrado");
+				}
+				
+				
+				Prova encontrada = bancodedados.filtrop(indicadorProva);
+				if(encontrada == null) {
+					
+					System.out.println("Prova n�o encontrada");
+					
+				}
+				
+				
+				
 			}
 
 		}
